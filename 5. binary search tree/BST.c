@@ -176,6 +176,19 @@ void Tree_delete(Tree root, struct Node *z)//从以 root 为根的 BST 中删除
 }
 
 
+int max(int a, int b)
+{
+	return a > b ? a : b;
+}
+
+int Tree_Depth(Tree root)//返回以 root 为节点的树的深度
+{
+	if (root == NULL)
+		return 0;
+	else
+		return max(Tree_Depth(root->left), Tree_Depth(root->right)) + 1;
+}
+
 
 int main()
 {
@@ -198,6 +211,7 @@ int main()
 				 /
 				9
 	*/
+	printf("the depth of BST is %d\n\n", Tree_Depth(root));
 
 	printf("preorder_traversal: "); preorder_traversal(root);printf("\n");
 	printf("inorder_traversal: "); inorder_traversal(root); printf("\n");
