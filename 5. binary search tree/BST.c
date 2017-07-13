@@ -138,6 +138,45 @@ struct Node * Predecessor(Tree root, struct Node *x)//寻找以 root 为根的 B
 }
 
 
+void Tree_delete(Tree root, struct Node *z)//从以 root 为根的 BST 中删除结点 z
+{
+	/* 删除结点 z 时，考虑三种情况。具体是删哪一个结点被删除取决于 z 有多少子女
+
+	case 1: z 没有儿子节点，删除 z 本身
+	case 2: z 只有一个儿子，删除 z 本身
+	case 3: z 有两个儿子，删除 z 的后继，然后用后继的键值替代 z 的键值*/
+
+	struct Node * y; // y 是要被删除的结点
+	if (z->left == NULL || z->right == NULL)// 如果 z 有 0 或 1 个儿子则删除 z，z 有 2 个儿子则删除 z 的后继
+		y = z;
+	else
+		y = Tree_Succeccor(root, z);
+
+	struct Node * x;
+	if (y->left != NULL) // x 被置为 y 的非 NULL 子女，或者当 y 无子女时被置为 NULL
+		x = y->left;
+	else
+		x = y->right;
+
+	if (x != NULL) // z 有子节点，那么要重置 parent 指针
+		x->parent = y->parent;
+
+	if (y->parent == NULL) {//删除的结点是树根
+		root = x;
+	}
+	else if (y->parent->left == y) //更新被删除的结点的父结点的儿子指针
+		y->parent->left = x;
+	else
+		y->parent->right = x;
+
+	if (y != z)//如果删除的结点是 z 的后继，就将后继的内容复制到 z 中
+		z->data = y->data;
+
+	free(y);
+}
+
+
+
 int main()
 {
 	Tree root = NULL;
@@ -160,9 +199,9 @@ int main()
 				9
 	*/
 
-	printf("preorder_traversal："); preorder_traversal(root);printf("\n");
-	printf("inorder_traversal："); inorder_traversal(root); printf("\n");
-	printf("postorder_traversal："); postorder_traversal(root); printf("\n");
+	printf("preorder_traversal: "); preorder_traversal(root);printf("\n");
+	printf("inorder_traversal: "); inorder_traversal(root); printf("\n");
+	printf("postorder_traversal: "); postorder_traversal(root); printf("\n");
 
 	printf("\nSearch element :\n");
 	if (Tree_Search(root, 9))printf("9 is in BST\n");
@@ -171,7 +210,23 @@ int main()
 	printf("maximun: %d\n", Maximum(root)->data);
 	printf("minimue: %d\n\n", Minimum(root)->data);
 
-	printf("root's successor is %d\n", Succeccor(root, root)->data);
-	printf("root's predecessor is %d\n\n", Predecessor(root, root)->data);
+	printf("root's successor is %d\n", Tree_Succeccor(root, root)->data);
+	printf("root's predecessor is %d\n\n", Tree_Predecessor(root, root)->data);
+
+	printf("Search and Delete:\n");
+	printf("case 1: delete leaf node  eg : 9. inorder traversal after deleting: \n");
+	Tree_delete(root, Tree_Search(root, 9));
+	inorder_traversal(root); printf("\n");
+
+	printf("case 2: delete node with 1 child  eg : 7. inorder traversal after deleting: \n");
+	Tree_delete(root, Tree_Search(root, 7));
+	inorder_traversal(root); printf("\n");
+
+	printf("case 3: delete node with 2 children eg : 20. inorder traversal after deleting: \n");
+	Tree_delete(root, Tree_Search(root, 20));
+	inorder_traversal(root); printf("\n");
+
+	printf("\nDone!\n\n");
+
 	return 0;
 }
