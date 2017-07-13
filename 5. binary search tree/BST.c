@@ -149,15 +149,15 @@ int main()
 	}
 
 	/*
-	BST is like：	 15
-				   /    \
-				  6     18
-				 / \    / \
-				3   7  17 20
-			   / \   \
-			  2   4   13
-					  /
-					 9
+	BST is like：	 	15
+			      /    \
+			     6     18
+			    / \    / \
+			   3   7  17 20
+			  / \   \
+			 2   4   13
+				 /
+				9
 	*/
 
 	printf("preorder_traversal："); preorder_traversal(root);printf("\n");
