@@ -190,15 +190,21 @@ int Tree_Depth(Tree root)//返回以 root 为节点的树的深度
 }
 
 
+void Build_a_tree(Tree * root, int a[], int n)
+{
+	int i;
+	for (i = 0; i < n; i++)
+	{
+		*root = Tree_Insert(*root, a[i]);
+	}
+}
+
 int main()
 {
 	Tree root = NULL;
 	int a[11] = { 15,6,3,7,2,4,13,9,18,17,20 };
-	int i;
-	for (i = 0; i < 11; i++)
-	{
-		root = Tree_Insert(root, a[i]);
-	}
+	Build_a_tree(&root, a, 11);
+
 
 	/*
 	BST is like：	 	15
