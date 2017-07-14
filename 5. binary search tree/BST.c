@@ -115,7 +115,7 @@ struct Node * Maximum(Tree root)//寻找根为 root 的 BST 中的键值最大�
 	return x;
 }
 
-struct Node * Succeccor(Tree root, struct Node * x)//寻找以 root 为根的 BST 中的结点 x 在中序遍历下它的后继
+struct Node * Tree_Succeccor(Tree root, struct Node * x)//寻找以 root 为根的 BST 中的结点 x 在中序遍历下它的后继
 {
 	if (x->right != NULL)//如果结点 x 的右子树非空，则 x 的后继即右子树的最小节点
 		return Minimum(root->right);
@@ -129,7 +129,7 @@ struct Node * Succeccor(Tree root, struct Node * x)//寻找以 root 为根的 BS
 	return y;
 }
 
-struct Node * Predecessor(Tree root, struct Node *x)//寻找以 root 为根的 BST 中的结点 x 在中序遍历下它的前驱
+struct Node * Tree_Predecessor(Tree root, struct Node *x)//寻找以 root 为根的 BST 中的结点 x 在中序遍历下它的前驱
 {
 	if (x->left != NULL)//如果结点 x 的左子树非空，则 x 的前驱即左子树的最大结点
 		return Maximum(root->left);
