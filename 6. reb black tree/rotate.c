@@ -1,4 +1,4 @@
-﻿//RBTree 的 旋转 操作测试用main函数
+﻿//用于测试 旋转 的 main 函数
 int main()
 {
 	RBTree root = NULL;

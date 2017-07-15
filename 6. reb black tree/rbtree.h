@@ -23,9 +23,9 @@ struct RBNode *nil = &Nil;//哨兵值
 struct RBNode * NewNode(int key)
 {
 	struct RBNode * p = (struct RBNode *)malloc(sizeof(RBNode));
-	p->color = BLACK;
+	p->color = RED;
 	p->data = key;
-	p->left = p->right = p->parent = NULL;
+	p->left = p->right = p->parent = nil;
 	return p;
 }
 
@@ -56,9 +56,9 @@ struct RBNode * Rotate_left(struct RBNode * x, RBTree root) //对根为 root 的
 		x->parent->right = y;
 
 	y->left = x; // ③ x 成为 y 的左孩子
-x->parent = y;
+	x->parent = y;
 
-return root;
+	return root;
 }
 
 /*-----------------------------------------------------------
@@ -123,6 +123,77 @@ void postorder_traversal(RBTree t)
 	}
 }
 
+RBTree RBTree_Insert_Fixup(RBTree root, struct RBNode * z) // RBTree 的插入就是普通 BST Insert 加上一个重新调整树结构，以符合红黑树性质。
+{
+	struct RBNode * uncle = NULL;
+
+	while (z->parent->color == RED) { // 循环条件 当前节点 z 的父结点颜色为红
+
+		if (z->parent == z->parent->parent->left) { // 如果 z 的父母是 z 的祖父的左孩子
+			uncle = z->parent->parent->right; // 保存 uncle，祖父的右孩子，也就是 z 的叔叔
+
+			if (uncle && uncle->color == RED) {	// case 1: z 的叔叔是红色的
+				z->parent->color = BLACK;		// z 的父母着为黑色，解决 z 和 z->parent 都是红色的问题
+				uncle->color = BLACK;			// 将叔叔变成黑叔叔
+				z->parent->parent->color = RED;	// 将 z 的祖父当做 **新增节点 z** 来看待，然后着红色
+				z = z->parent->parent;			// 好像指针 z 向上移两层
+
+												// case 1 结束 
+			}
+			else
+			{   // case 2: z 的叔叔是黑色的
+				if (z == z->parent->right) { // 且 z 为右孩子
+					root = Rotate_left(z->parent, root); // 左旋 z 与其父母结点
+					struct RBNode * tmp = z->parent;
+					z->parent = z;
+					z = tmp;  // z 与其父结点互换
+				}
+				// case 3: z 的叔叔是黑色的，此时 z 成了左孩子
+
+				// case 1 是不会走到 case 2 和 case 3 中的。
+				// case 3 的情况会走到这里开始，case 2 的情况会执行完 case 2 再顺着执行 case 3
+
+				z->parent->color = BLACK; // z 的父结点着黑
+				z->parent->parent->color = RED; // 祖父结点着红
+				root = Rotate_right(z->parent->parent, root); // 右旋 z 与其祖父结点
+
+			}
+		}
+
+		else
+		{ // 第一个 if 的左右交换版，即如果 z 的父母是 z 的祖父的右孩子
+			uncle = z->parent->parent->left;
+
+			if (uncle && uncle->color == RED) { // case 1
+				z->parent->color = BLACK;
+				uncle->color = BLACK;
+				z->parent->parent->color = RED;
+				z = z->parent->parent;
+
+				// case 1 结束
+			}
+			else
+			{	// case 2
+				if (z == z->parent->left) { // 且 z 为左孩子，注意这里要变
+					root = Rotate_right(z->parent, root);
+					struct RBNode * tmp = z->parent;
+					z->parent = z;
+					z = tmp;
+				}
+
+				// case 3
+				z->parent->color = BLACK;
+				z->parent->parent->color = RED; // 坑：换颜色要在 rotate 之前换
+				root = Rotate_left(z->parent->parent, root);
+
+			}
+		}
+	}
+
+	root->color = BLACK; // 根节点必定为黑，结束
+	return root;
+}
+
 RBTree Tree_Insert(RBTree root, int key)//向根为 root 的 BST 中插入一个结点，其键值为 key
 {
 	struct RBNode * x = root;//搜索节点
@@ -131,8 +202,6 @@ RBTree Tree_Insert(RBTree root, int key)//向根为 root 的 BST 中插入一个
 	if (root == NULL)
 	{
 		root = NewNode(key);
-		root->left = nil;
-		root->right = nil;
 		root->color = BLACK;
 		return root;
 	}
@@ -159,7 +228,9 @@ RBTree Tree_Insert(RBTree root, int key)//向根为 root 的 BST 中插入一个
 
 	z->left = nil;
 	z->right = nil;
-	z->color = RED; // 新插入的节点的两个儿子都指向 nil ，置为红色
+	z->color = RED; // 新插入的节点置为红色，且两个儿子都指向 nil。
+
+	root = RBTree_Insert_Fixup(root, z); // 这里一定要用返回给 root 赋值
 
 	return root;
 }
@@ -234,24 +305,24 @@ void Tree_delete(RBTree root, struct RBNode *z)//从以 root 为根的 BST 中�
 	else
 		y = Tree_Succeccor(root, z);
 
-	struct RBNode * x;
+	struct RBNode * x;   // 性质： y 至多只有一个子女
 	if (y->left != NULL) // x 被置为 y 的非 NULL 子女，或者当 y 无子女时被置为 NULL
 		x = y->left;
 	else
 		x = y->right;
 
-	if (x != NULL) // z 有子节点，那么要重置 parent 指针
+	if (x != NULL) // 如果 y 有子节点，那么要重置其 parent 指针
 		x->parent = y->parent;
 
-	if (y->parent == NULL) {//删除的结点是树根
+	if (y->parent == NULL) { // 删除的结点是树根
 		root = x;
 	}
-	else if (y->parent->left == y) //更新被删除的结点的父结点的儿子指针
+	else if (y->parent->left == y) // 更新被删除的结点的父结点的儿子指针
 		y->parent->left = x;
 	else
 		y->parent->right = x;
 
-	if (y != z)//如果删除的结点是 z 的后继，就将后继的内容复制到 z 中
+	if (y != z) // 如果删除的结点是 z 的后继，就将后继的内容复制到 z 中
 		z->data = y->data;
 
 	free(y);
