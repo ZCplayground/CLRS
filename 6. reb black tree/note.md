@@ -72,6 +72,6 @@ n ≥ 2^(h/2) - 1
 
 # 参考链接
 
--[红黑树并没有我们想象的那么难(上)](http://daoluan.net/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E7%AE%97%E6%B3%95/2013/09/25/rbtree-is-not-difficult.html)
+- [红黑树并没有我们想象的那么难(上)](http://daoluan.net/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E7%AE%97%E6%B3%95/2013/09/25/rbtree-is-not-difficult.html)
 
--[浅谈算法和数据结构: 九 平衡查找树之红黑树](http://www.cnblogs.com/yangecnu/p/Introduce-Red-Black-Tree.html) 
+- [浅谈算法和数据结构: 九 平衡查找树之红黑树](http://www.cnblogs.com/yangecnu/p/Introduce-Red-Black-Tree.html) 
