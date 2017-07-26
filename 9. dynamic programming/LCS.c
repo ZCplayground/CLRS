@@ -48,6 +48,15 @@ int LCS_length(char *s1, char *s2)
 	return c[i-1][j-1];
 }
 
+/*
+2、用数组 c 中构造 **一个** LCS
+
+i 和 j 分别从 m，n 开始，递减循环直到i = 0，j = 0。 
+- 如果str1[i] == str2[j]，则将str[i]字符插入到子序列内，i--，j--；
+- 如果str1[i] != str[j]，则比较L[i,j-1]与L[i-1,j]，L[i,j-1]大，则j--，否则i--；
+（如果相等，则任选一个，可由此构造出全部的 LCS）
+*/
+
 char * LCS(char *s1, char *s2)
 {
 	int lcs_len = LCS_length(s1, s2);
@@ -66,6 +75,7 @@ char * LCS(char *s1, char *s2)
 			lcs_len--;
 		}
 		else {
+			// if(c[i - 1][j] == c[i][j] && c[i][j - 1] == c[i][j]) go up or left randomly;
 			if (c[i - 1][j] == c[i][j])
 				i--;
 			else if (c[i][j - 1] == c[i][j])
@@ -86,15 +96,6 @@ char * LCS(char *s1, char *s2)
 
 	return lcs;
 }
-
-/*
-2、从数组L中查找一个最长的公共子序列
-
-i和j分别从m，n开始，递减循环直到i = 0，j = 0。其中，m和n分别为两个串的长度。
-·如果str1[i] == str2[j]，则将str[i]字符插入到子序列内，i--，j--；
-·如果str1[i] != str[j]，则比较L[i,j-1]与L[i-1,j]，L[i,j-1]大，则j--，否则i--；（如果相等，则任选一个）
-
-*/
 
 int main()
 {
