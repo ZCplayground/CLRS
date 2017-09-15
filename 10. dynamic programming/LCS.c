@@ -27,17 +27,17 @@ int max(int a, int b)
 	return a > b ? a : b;
 }
 
-int LCS_length(char *s1, char *s2)
+int LCS_length(char *s1, char *s2) // 构造 LCS 生成的表格
 {
 	int m = strlen(s1);
 	int n = strlen(s2);
-	
+
 	memset(c, 0, sizeof(c));
 	int i, j;
 
-	for(i=1;i<=m;i++){
+	for (i = 1; i <= m; i++) {
 		for (j = 1; j <= n; j++) {
-			if (s1[i-1] == s2[j-1])
+			if (s1[i - 1] == s2[j - 1])
 				c[i][j] = c[i - 1][j - 1] + 1;
 			else
 				c[i][j] = max(c[i - 1][j], c[i][j - 1]);
@@ -48,13 +48,13 @@ int LCS_length(char *s1, char *s2)
 		//printf("\n");
 	}
 	//printf("longest common subsquence length: %d\n\n", c[i - 1][j - 1]);
-	return c[i-1][j-1];
+	return c[i - 1][j - 1];
 }
 
 /*
 2、用数组 c 中构造 **一个** LCS
 
-i 和 j 分别从 m，n 开始，递减循环直到i = 0，j = 0。 
+i 和 j 分别从 m，n 开始，递减循环直到i = 0，j = 0。
 - 如果str1[i] == str2[j]，则将str[i]字符插入到子序列内，i--，j--；
 - 如果str1[i] != str[j]，则比较L[i,j-1]与L[i-1,j]，L[i,j-1]大，则j--，否则i--；
 （如果相等，则任选一个，可由此构造出全部的 LCS）
@@ -71,14 +71,15 @@ char * LCS(char *s1, char *s2)
 	int i = m, j = n; //  搜索的位置
 	int k = 0; // lcs 指针
 	while (lcs_len > 0) {
-		if (s1[i - 1] == s2[j - 1] && (c[i - 1][j - 1] + 1 == c[i][j])){
+		if (s1[i - 1] == s2[j - 1] && (c[i - 1][j - 1] + 1 == c[i][j])) {
 			lcs[k++] = s1[i - 1];
 			i--;
 			j--;
 			lcs_len--;
 		}
 		else {
-			// if(c[i - 1][j] == c[i][j] && c[i][j - 1] == c[i][j]) go up or left randomly;
+			/* if(c[i - 1][j] == c[i][j] && c[i][j - 1] == c[i][j]) 
+			可以向上或向左走，这里就可能构造出不同的 LCS */
 			if (c[i - 1][j] == c[i][j])
 				i--;
 			else if (c[i][j - 1] == c[i][j])
@@ -87,7 +88,7 @@ char * LCS(char *s1, char *s2)
 	}
 	lcs[k] = '\0';
 
-	//REVERSE
+	//逆序
 	lcs_len = strlen(lcs);
 	for (i = 0; i < lcs_len / 2; i++)
 	{
@@ -96,7 +97,6 @@ char * LCS(char *s1, char *s2)
 		lcs[i] = lcs[lcs_len - 1 - i];
 		lcs[lcs_len - 1 - i] = temp;
 	}
-
 	return lcs;
 }
 
@@ -104,7 +104,7 @@ int main()
 {
 	char *s1 = "BDCABA";
 	char *s2 = "ABCBDAB";
-	
+
 	char *lcs = LCS(s1, s2);
 	puts(lcs);
 
