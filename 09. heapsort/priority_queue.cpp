@@ -53,6 +53,7 @@ int p_queue::extract_max()
 	a[0] = a[heapsize-1];
 	heapsize--;
 	Max_heapify(a, heapsize, 0); // 思路与 heapsort 很像
+	return max;
 }
 
 void p_queue::heap_increase_key(int i, int key) // 将下标为 i 的元素的键值更新为更大的 key 
