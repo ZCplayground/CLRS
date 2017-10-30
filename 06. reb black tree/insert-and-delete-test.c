@@ -21,7 +21,7 @@ int main()
 	Delete_node_with_key(105, &root);
 
 	printf("preorder_traversal: "); preorder_traversal(root); printf("\n");
-	printf("inorder_traversal: "); inorder_traversal(root); printf("\n");  //中序遍历中少了 24 
+	printf("inorder_traversal: "); inorder_traversal(root); printf("\n");  
 	printf("postorder_traversal: "); postorder_traversal(root); printf("\n\n");
 	printf("tree depth: %d\n", Tree_Depth(root));
 
