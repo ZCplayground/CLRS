@@ -81,7 +81,6 @@ struct AVLNode * Tree_Search(AVLTree root, int key)//Ñ°ÕÒ¸ùÎª root µÄÊ÷ÖĞ¼üÖµÎª 
 	return x;
 }
 
-
 /*---------------------------------------------------------------
 |     x             y        ×óĞı Rotate_left(x); a¡¢b¡¢c ÊÇ×ÓÊ÷
 |    / \    ==>    / \
@@ -105,7 +104,6 @@ struct AVLNode * Left_Rotation(struct AVLNode * x) //¶Ô AVL ÀïµÄ½áµã x ½øĞĞ×óµ¥Ğ
 	return y; // ·µ»ØÕâÆ¬×ÓÊ÷µÄĞÂ¸ù½Úµã£ºy
 }
 
-
 /*-----------------------------------------------------------
 |     x           y          ÓÒĞı Rotate_right(x)
 |    / \   ==>   / \
@@ -128,7 +126,6 @@ struct AVLNode * Right_Rotation(struct AVLNode *x)//¶Ô AVL ÀïµÄ½áµã x ½øĞĞÓÒµ¥Ğı
 	return y;
 }
 
-
 /*-----------------------------------------------------------------------------
 |     x               x                  z           Ğ¡Ğ´×ÖÄ¸ x¡¢y¡¢z ´ú±í½Úµã£¬
 |    / \             / \               /   \         ´óĞ´×ÖÄ¸ ABCD ´ú±í×ÓÊ÷
@@ -138,7 +135,6 @@ struct AVLNode * Right_Rotation(struct AVLNode *x)//¶Ô AVL ÀïµÄ½áµã x ½øĞĞÓÒµ¥Ğı
 |    / \         / \
 |   B   C       A   B
 ------------------------------------------------------------------------------*/
-
 
 struct AVLNode * Left_Right_Rotation(struct AVLNode *x) //¶Ô²»Æ½ºâµÄ½Úµã x ½øĞĞ LR Ğı×ª
 {
@@ -162,7 +158,6 @@ struct AVLNode * Right_Left_Rotation(struct AVLNode *x) //¶Ô²»Æ½ºâµÄ½Úµã x ½øĞĞ 
 	Right_Rotation(x->right);
 	return Left_Rotation(x);
 }
-
 
 AVLTree AVLTree_Insert(AVLTree root, int key) //Ïò¸ùÎª root µÄÊ÷ÖĞ²åÈëÒ»¸ö½áµã£¬Æä¼üÖµÎª key
 {
@@ -220,7 +215,6 @@ struct AVLNode * Minimum(AVLTree root)//Ñ°ÕÒ¸ùÎª root µÄÊ÷ÖĞµÄ¼üÖµ×îĞ¡µÄ½áµã
 	return x;
 }
 
-
 struct AVLNode * Maximum(AVLTree root)//Ñ°ÕÒ¸ùÎª root µÄ BST ÖĞµÄ¼üÖµ×î´óµÄ½áµã
 {
 	struct AVLNode * x = root;
@@ -230,70 +224,61 @@ struct AVLNode * Maximum(AVLTree root)//Ñ°ÕÒ¸ùÎª root µÄ BST ÖĞµÄ¼üÖµ×î´óµÄ½áµã
 	return x;
 }
 
-struct AVLNode * Tree_Delete(AVLTree root, struct AVLNode * x) //´ÓÒÔ root Îª¸ùµÄ AVL ÖĞÉ¾³ı½áµã x
+struct AVLNode * AVTree_Delete(AVLTree root, struct AVLNode * x) //´ÓÒÔ root Îª¸ùµÄ AVL ÖĞÉ¾³ı½áµã x
 {
 	if (root == NULL || x == NULL)
 		return NULL;
 
-	if (x->key < root->key)        // ´ıÉ¾³ıµÄ½ÚµãÔÚ"rootµÄ×ó×ÓÊ÷"ÖĞ
+	if (x->key < root->key)        // ´ıÉ¾³ıµÄ½ÚµãÔÚ root µÄ×ó×ÓÊ÷ÖĞ
 	{
-		root->left = Tree_Delete(root->left, x);
+		root->left = AVTree_Delete(root->left, x);
 		// É¾³ı½Úµãºó£¬ÈôAVLÊ÷Ê§È¥Æ½ºâ£¬Ôò½øĞĞÏàÓ¦µÄµ÷½Ú¡£
 		if (Get_Height(root->right) - Get_Height(root->left) == 2)
 		{
 			struct AVLNode *r = root->right;
 			if (Get_Height(r->left) > Get_Height(r->right))
-				root = Right_Left_Rotation(root);
+				root = Right_Left_Rotation(root); // É¾³ıµÄ½ÚµãÔÚ×ó×ÓÊ÷µÄÓÒ±ß£¬Ë«Ğı
 			else
-				root = Left_Rotation(root);
+				root = Left_Rotation(root); // É¾³ıµÄ½ÚµãÔÚ×ó×ÓÊ÷µÄ×ó±ß£¬µ¥Ğı
 		}
 	}
 
-	else if (x->key > root->key)// ´ıÉ¾³ıµÄ½ÚµãÔÚ"rootµÄÓÒ×ÓÊ÷"ÖĞ
+	else if (x->key > root->key)// ´ıÉ¾³ıµÄ½ÚµãÔÚ root µÄÓÒ×ÓÊ÷ÖĞ
 	{
-		root->right = Tree_Delete(root->right, x);
+		root->right = AVTree_Delete(root->right, x);
 		// É¾³ı½Úµãºó£¬ÈôAVLÊ÷Ê§È¥Æ½ºâ£¬Ôò½øĞĞÏàÓ¦µÄµ÷½Ú¡£
 		if (Get_Height(root->left) - Get_Height(root->right) == 2)
 		{
 			struct AVLNode *l = root->left;
 
 			if (Get_Height(l->right) > Get_Height(l->left))
-				root = Left_Right_Rotation(root);
+				root = Left_Right_Rotation(root);// É¾³ıµÄ½ÚµãÔÚÓÒ×ÓÊ÷µÄ×ó±ß£¬Ë«Ğı
 			else
-				root = Right_Rotation(root);
+				root = Right_Rotation(root);// É¾³ıµÄ½ÚµãÔÚ×ó×ÓÊ÷µÄ×ó±ß£¬µ¥Ğı
 		}
 	}
 
 	else    // rootÊÇ¶ÔÓ¦ÒªÉ¾³ıµÄ½Úµã¡£
 	{
-		// rootµÄ×óÓÒº¢×Ó¶¼·Ç¿Õ
+		// root ÓĞÁ½¸öº¢×Ó£¬É¾ºó¼Ì
 		if ((root->left) && (root->right))
 		{
 			if (Get_Height(root->left) > Get_Height(root->right))
 			{
-				// Èç¹ûrootµÄ×ó×ÓÊ÷±ÈÓÒ×ÓÊ÷¸ß£»
-				// Ôò(01)ÕÒ³örootµÄ×ó×ÓÊ÷ÖĞµÄ×î´ó½Úµã
-				//   (02)½«¸Ã×î´ó½ÚµãµÄÖµ¸³Öµ¸øroot¡£
-				//   (03)É¾³ı¸Ã×î´ó½Úµã¡£
-				// ÕâÀàËÆÓÚÓÃ"rootµÄ×ó×ÓÊ÷ÖĞ×î´ó½Úµã"×ö"root"µÄÌæÉí£»
-				// ²ÉÓÃÕâÖÖ·½Ê½µÄºÃ´¦ÊÇ£ºÉ¾³ı"rootµÄ×ó×ÓÊ÷ÖĞ×î´ó½Úµã"Ö®ºó£¬AVLÊ÷ÈÔÈ»ÊÇÆ½ºâµÄ¡£
-				struct AVLNode * max = Maximum(root->left);
-				root->key = max->key;
-				root->left = Tree_Delete(root->left, max);
+				// Èç¹ûrootµÄ×ó×ÓÊ÷±ÈÓÒ×ÓÊ÷¸ß£»  
+				struct AVLNode * max = Maximum(root->left); // ÔòÕÒ³ö root µÄ×ó×ÓÊ÷ÖĞµÄ×î´ó½Úµã
+				root->key = max->key; // ½«¸Ã×î´ó½ÚµãµÄÖµ¸³Öµ¸øroot
+				root->left = AVTree_Delete(root->left, max); // É¾³ı¸Ã×î´ó½Úµã¡£
 			}
 			else
 			{
-				// Èç¹ûrootµÄ×ó×ÓÊ÷²»±ÈÓÒ×ÓÊ÷¸ß(¼´ËüÃÇÏàµÈ£¬»òÓÒ×ÓÊ÷±È×ó×ÓÊ÷¸ß1)
-				// Ôò(01)ÕÒ³örootµÄÓÒ×ÓÊ÷ÖĞµÄ×îĞ¡½Úµã
-				//   (02)½«¸Ã×îĞ¡½ÚµãµÄÖµ¸³Öµ¸øroot¡£
-				//   (03)É¾³ı¸Ã×îĞ¡½Úµã¡£
-				// ÕâÀàËÆÓÚÓÃ"rootµÄÓÒ×ÓÊ÷ÖĞ×îĞ¡½Úµã"×ö"root"µÄÌæÉí£»
-				// ²ÉÓÃÕâÖÖ·½Ê½µÄºÃ´¦ÊÇ£ºÉ¾³ı"rootµÄÓÒ×ÓÊ÷ÖĞ×îĞ¡½Úµã"Ö®ºó£¬AVLÊ÷ÈÔÈ»ÊÇÆ½ºâµÄ¡£
-				struct AVLNode * min = Minimum(root->right);
-				root->key = min->key;
-				root->right = Tree_Delete(root->right, min);
+				// Èç¹ûrootµÄ×ó×ÓÊ÷²»±ÈÓÒ×ÓÊ÷¸ß£¬
+				struct AVLNode * min = Minimum(root->right); // ÕÒ³örootµÄÓÒ×ÓÊ÷ÖĞµÄ×îĞ¡½Úµã
+				root->key = min->key; // ½«¸Ã×îĞ¡½ÚµãµÄÖµ¸³Öµ¸øroot¡£
+				root->right = AVTree_Delete(root->right, min); // É¾³ı¸Ã×îĞ¡½Úµã¡£
 			}
 		}
+		// Èç¹ûÒ»¸ö×ÓÅ®£¬ÓÃÄÇ¸ö×ÓÅ®Ìæ´ú¼´¿É£»Èç¹ûÃ»ÓĞ×ÓÅ®£¬Ö±½ÓÉ¾³ı¼´¿É
 		else
 		{
 			struct AVLNode * tmp = root;
@@ -303,7 +288,7 @@ struct AVLNode * Tree_Delete(AVLTree root, struct AVLNode * x) //´ÓÒÔ root Îª¸ùµ
 	
 	}
 	if (root != NULL)
-		root->height = max(Get_Height(root->left), Get_Height(root->right)) + 1;
+		root->height = max(Get_Height(root->left), Get_Height(root->right)) + 1; // µ÷Õû¸ß¶È
 
 	return root;
 }
@@ -315,7 +300,7 @@ void Delete_node_with_key(AVLTree * root, int key)
 		printf("key %d is not exist!\n", key);
 		return;
 	}
-	*root = Tree_Delete(*root, node);
+	*root = AVTree_Delete(*root, node);
 }
 
 int Tree_Search_Get_Depth(AVLTree root, int key)//Ñ°ÕÒ¸ùÎª root µÄÊ÷ÖĞ¼üÖµÎª key µÄ½áµã£¬·µ»ØÖµÊÇ¸Ã½ÚµãµÄÉî¶È
@@ -335,25 +320,6 @@ int Tree_Search_Get_Depth(AVLTree root, int key)//Ñ°ÕÒ¸ùÎª root µÄÊ÷ÖĞ¼üÖµÎª key
 		depth++;
 	}
 	return depth;
-}
-
-void Answer_List(AVLTree root, int a[], int b[], int n) // ÒÀ´ÎÊä³ö a Êı×éÖĞµÄÔªËØËùÔÚÒÔ root Îª¸ùµÄ AVL Ê÷ÖĞµÄÉî¶Èµ½ b Êı×éÖĞ
-{
-	int i;
-	for (i = 0; i < n; i++)
-	{
-		b[i] = Tree_Search_Get_Depth(root, a[i]);
-	}
-
-	for (i = 0; i < n; i++)
-	{
-		if (i == 0) {
-			printf("%d", b[i]);
-		}
-		else {
-			printf(" %d", b[i]);
-		}
-	}
 }
 
 void Build_a_AVLTree(AVLTree * root, int a[], int n)
@@ -393,7 +359,7 @@ int main()
 				printf("%d %d\n", x->key, 
 					Tree_Search_Get_Depth(root, x->key));
 
-			root = Tree_Delete(root, x);
+			root = AVTree_Delete(root, x);
 		}
 		else if (op == 2)
 		{
@@ -403,7 +369,7 @@ int main()
 				printf("%d %d\n", x->key,
 					Tree_Search_Get_Depth(root, x->key));
 
-			root = Tree_Delete(root, x);
+			root = AVTree_Delete(root, x);
 		}
 		else if (op == 3)
 		{
@@ -412,6 +378,5 @@ int main()
 			root = AVLTree_Insert(root, key);
 		}
 	}
-
 	return 0;
 }
