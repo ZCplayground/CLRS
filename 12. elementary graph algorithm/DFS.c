@@ -1,5 +1,5 @@
-DFS±éÀú:
-#include<iostream>using namespace std;
+#include<iostream>
+using namespace std;
 int graph[100][100];
 bool  visit[100];
 void DFS(int v, int n)
@@ -24,9 +24,9 @@ void init_visit(int n)
 int main()
 {
 	int n;
-	cout << "ÊäÈë¶¥µãÊı£º" << endl;
+	cout << "è¾“å…¥é¡¶ç‚¹æ•°ï¼š" << endl;
 	cin >> n;
-	cout << "ÊäÈëÍ¼µÄÁÚ½Ó¾ØÕó£º" << endl;
+	cout << "è¾“å…¥å›¾çš„é‚»æ¥çŸ©é˜µï¼š" << endl;
 	int f;
 	for (int i = 0; i< n; ++i)
 	{
@@ -38,7 +38,7 @@ int main()
 	}
 	init_visit(n);
 	int cnt = 0;
-	cout << "DFSĞòÁĞÎª£º" << endl;
+	cout << "DFSåºåˆ—ä¸ºï¼š" << endl;
 	for (int i = 0; i < n; ++i)
 	{
 		if (visit[i] == false)
@@ -48,7 +48,7 @@ int main()
 		}
 	}
 	cout << endl;
-	cout << "¸ÃÍ¼ÁªÍ¨·ÖÁ¿£º" << cnt << endl;
+	cout << "è¯¥å›¾è”é€šåˆ†é‡ï¼š" << cnt << endl;
 	return 0;
 }
 
