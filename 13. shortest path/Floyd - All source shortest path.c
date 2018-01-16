@@ -1,8 +1,7 @@
-
 #include<iostream>
 using namespace std;
-int n, m; //n¸ö½Úµã mÌõ±ß
-int map[205][205];//ÁÚ½Ó¾ØÕó
+int n, m; //nä¸ªèŠ‚ç‚¹ mæ¡è¾¹
+int map[205][205];//é‚»æ¥çŸ©é˜µ
 int min(int a, int b)
 {
 	return a < b ? a : b;
@@ -14,25 +13,25 @@ int main()
 		for (int i = 0; i < n; i++)
 			for (int j = 0; j < n; j++)
 				if (i == j)map[i][j] = 0;
-				else map[i][j] = 22222;
+				else map[i][j] = 1e9;
 	
 
-		for (int i = 1; i <= m; i++)//ÊäÈëmÌõÂ·
+		for (int i = 1; i <= m; i++)//è¾“å…¥mæ¡è·¯
 		{
 			int x, y, z; scanf("%d%d%d", &x, &y, &z);
-			//½Úµã x µ½½Úµã y ÓĞÒ»ÌõÂ·£¬È¨ÊÇ z
-			map[x][y] = min(z, map[x][y]);//ÎŞÏò±ß´æĞ¡µÄ
+			//èŠ‚ç‚¹ x åˆ°èŠ‚ç‚¹ y æœ‰ä¸€æ¡è·¯ï¼Œæƒæ˜¯ z
+			map[x][y] = min(z, map[x][y]);//æ— å‘è¾¹å­˜å°çš„
 			map[y][x] = min(z, map[y][x]);
 		}
-		int s, t;//Æğµã ÖÕµã
+		int s, t;//èµ·ç‚¹ ç»ˆç‚¹
 		scanf("%d%d", &s, &t);
-				for (int k = 0; k < n; k++)
+		for (int k = 0; k < n; k++)
 			for (int i = 0; i < n; i++)
 				for (int j = 0; j < n; j++)
 					map[i][j] = min(map[i][j], map[i][k] +map[k][j]);
 
-		if (map[s][t] == 22222) cout << "-1" << endl;
-		else cout << map[s][t] << endl;//×î¶ÌÂ·
+		if (map[s][t] == 1e9) cout << "-1" << endl;
+		else cout << map[s][t] << endl;//æœ€çŸ­è·¯
 	}
 	return 0;
 }
